@@ -1,20 +1,15 @@
 
-// const data = [
-//     {id:'todo', title: 'Todo', todos:[]},
-//     {id:'in-progress', title: 'In-progress', todos:[]},
-//     {id:'done', title: 'Done', todos:[]}
-// ]
+const data = [
+  {id:'new', title: 'New', todos:[]},
+  {id:'in-progress', title: 'In-progress', todos:[]},
+  {id:'completed', title: 'Completed', todos:[]},
+  {id:'done', title: 'Done', todos:[]}
+]
 
 // App
 class App {
     constructor(){
-      this.data = [
-        {id:'new', title: 'New', todos:[]},
-        {id:'in-progress', title: 'In-progress', todos:[]},
-        {id:'completed', title: 'Completed', todos:[]},
-        {id:'done', title: 'Done', todos:[]}
-    ]
-
+      this.data = data
     }
     init(){
         this.render()
@@ -28,57 +23,39 @@ class App {
         this.addTask()
     }
     addTask(){
-       let titleTask = document.getElementById('title-task')
-       let descriptionTask = document.getElementById('description-task')
-       let dateTask = document.getElementById('date-task')
-       
        document.getElementById('create-task').addEventListener('click',()=>{
-        let columnId = document.getElementById('status-task').value - 1
-        console.log(columnId)
+        let columnStatus = document.getElementById('status-task').value
         
         
-        this.data[columnId].todos.push({title: titleTask.value, date: dateTask.value, description: descriptionTask.value})
-        console.log(this.data[columnId])
+        console.log(columnStatus)
 
-        console.log(typeof columnId)
-        this.data.forEach((item,index) =>{
-          let colId = index
-          console.log(typeof colId)
-          if(colId === columnId){
-            console.log('hello')
-            document.getElementById(index).insertAdjacentHTML('beforeend', new Card().template())
+        this.data.forEach(item =>{
+          if(item.id === columnStatus){
+            item.todos.push(new Card())
+            document.getElementById(item.id).insertAdjacentHTML('beforeend', new Card().template())
+            document.querySelectorAll('.badge').innerHTML = 'hi'
           }
         })
+
         
-        //  this.data.forEach(item =>{
-        //   let colId = item
-        //    if(colId.id === 'new'){
-        //     colId.todos.push({title: titleTask.value, description: descriptionTask.value})
-        //     console.log(colId.todos)
-        //     console.log(this.data)
-        //     document.getElementById('new').insertAdjacentHTML('beforeend', new Card().template())
-        //     document.getElementById('counter').innerHTML = colId.todos.length
-        //    }
-        //  })
+
        })
+      
+    }
+    deleteCard(){
       
     }
 }
 // columns
 class Column{
     constructor(){
-       this.data = [
-        {id:'new', title: 'New', todos:[]},
-        {id:'in-progress', title: 'In-progress', todos:[]},
-        {id:'completed', title: 'Completed', todos:[]},
-        {id:'done', title: 'Done', todos:[]}
-    ]
+       this.columns = data
     }
     drawColumn(){
       let board = ``
-      this.data.forEach((item,index) =>{
-        board += `<div class="col-3 border border-3" id="${index}">
-        <h4 class="d-flex justify-content-between p-2">${item.title}<span class="badge bg-dark" id="counter">${item.todos.length}</span></h4>
+      this.columns.forEach(item =>{
+        board += `<div class="col-3 border border-3" id="${item.id}">
+        <h4 class="d-flex justify-content-between p-2">${item.title}<span class="badge bg-dark">${item.todos.length}</span></h4>
 
         </div>`
       })
@@ -98,7 +75,7 @@ class Card{
       <div class="card text-bg-warning mb-3" style="max-width: 18rem;">
         <div class="card-title d-flex justify-content-between align-items-center p-2">
         <h5>${this.title}</h5>
-        <button type="button" class="btn btn-dark" id="delete-card">x</button>
+        <button type="button" class="btn btn-dark delete-card">x</button>
         </div>
         <div class="card-body">
             <h5 class="card-title">${this.user}</h5>
@@ -154,10 +131,10 @@ class Modal{
             <div class="mb-3 col-5 status">
                 <label class="py-2" for="status-task">Status</label>
                   <select class="form-select" id="status-task" aria-label="Default select example">
-                    <option value="1">New</option>
-                    <option value="2">In-progress</option>
-                    <option value="3">Completed</option>
-                    <option value="4">Done</option>
+                    <option value="new">New</option>
+                    <option value="in-progress">In-progress</option>
+                    <option value="completed">Completed</option>
+                    <option value="done">Done</option>
                   </select>
                 </select>
             </div>
